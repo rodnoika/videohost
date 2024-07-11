@@ -56,7 +56,7 @@ function Modal({ closeModal, onLoginSuccess }) {
         const data = response.data;
         console.log('Registration successful:', data);
         setErrorMessage('');
-        toggleForm(); // Automatically switch to login form after successful registration
+        toggleForm(); 
       }
     } catch (error) {
       console.error('Registration error', error);

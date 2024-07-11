@@ -10,21 +10,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from typing import Optional
-import hashlib
 from pathlib import Path
 
-# Конфигурация базы данных
+
 SQLALCHEMY_DATABASE_URL = "sqlite:///./videhost.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
-# Директория для сохранения загруженных файлов
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-# Модель базы данных для пользователя
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -71,20 +68,20 @@ class VideoResponse(BaseModel):
     class Config:
         orm_mode = True
 
-# Криптография
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-SECRET_KEY = "your_secret_key"
+SECRET_KEY = "hello"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# Приложение FastAPI
+
 app = FastAPI()
 
-# Настройка CORS
+
 origins = [
-    "http://localhost:3000",  # адрес вашего React-приложения
-    "http://localhost:5173",  # добавьте этот адрес
+    "http://localhost:3000",  
+    "http://localhost:5173",  
 ]
 
 app.add_middleware(
@@ -96,7 +93,6 @@ app.add_middleware(
 )
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
-# Зависимость для получения сессии базы данных
 def get_db():
     db = SessionLocal()
     try:
@@ -104,11 +100,9 @@ def get_db():
     finally:
         db.close()
 
-# Функция для хеширования пароля
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-# Создание JWT токена
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
@@ -119,7 +113,6 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-# Регистрация пользователя
 @app.post("/register", response_model=UserCreate)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == user.username).first()
@@ -132,11 +125,9 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return user
 
-# Проверка пароля
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-# Вход пользователя
 @app.post("/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == form_data.username).first()
@@ -154,7 +145,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     
     return response
 
-# Получение текущего пользователя
 def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -173,12 +163,10 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
         raise credentials_exception
     return user
 
-# Защищенный маршрут для проверки аутентификации
 @app.get("/users/me")
 def read_users_me(current_user: User = Depends(get_current_user)):
     return {"username": current_user.username}
 
-# Маршрут для загрузки видео
 @app.post("/upload", response_model=VideoResponse)
 async def upload_video(
     title: str = Form(...),
@@ -206,7 +194,6 @@ async def upload_video(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# Маршрут для получения видео пользователя
 @app.get("/videos/me", response_model=list[VideoResponse])
 def get_my_videos(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     return db.query(Video).filter(Video.owner_id == current_user.id).all()

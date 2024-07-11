@@ -48,7 +48,6 @@ function Header() {
   };
 
   const onLoginSuccess = (username, token) => {
-    // Save token and username to cookies
     Cookies.set('access_token', token);
     Cookies.set('username', username);
 
@@ -60,7 +59,6 @@ function Header() {
   };
 
   const handleLogout = () => {
-    // Clear token and username from cookies
     Cookies.remove('access_token');
     Cookies.remove('username');
 
