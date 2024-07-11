@@ -1,0 +1,43 @@
+.app {
+  text-align: center;
+}
+
+.header {
+  background-color: #202020;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.video-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+.video-card {
+  background-color: #282828;
+  margin: 10px;
+  padding: 10px;
+  width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-card img {
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid #383838;
+}
+
+.video-card-title {
+  font-size: 18px;
+  margin: 10px 0;
+}

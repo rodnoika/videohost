@@ -1,0 +1,82 @@
+.dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .user-name {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .video-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .video-thumbnail {
+    cursor: pointer;
+  }
+  
+  .video-thumbnail img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .video-title {
+    margin-top: 8px;
+    font-size: 16px;
+  }
+  
+  .video-player {
+    margin-top: 20px;
+  }
+  
+  .video-player video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .video-description {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .create-video-link {
+    text-decoration: none;
+  }
+  
+  .create-video-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .create-video-button:hover {
+    background-color: #45a049;
+  }
+  
+  .create-video-button:active {
+    background-color: #3e8e41;
+  }
+  
